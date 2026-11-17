@@ -1,0 +1,249 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Nexora brand palette — matches the logo and the investor deck.
+ *   Navy  #0F2340  (trust, clinical authority)
+ *   Teal  #13A89E  (primary brand / actions)
+ *   Mint  #2EE6B6  (highlights, success, "AI" accents)
+ *
+ * The legacy `blue-*`, `indigo-*` and `orange-*` utility scales used across the
+ * app are remapped to the brand teal / deep-teal / mint ramps so every screen
+ * picks up the medical-tech palette without rewriting each component.
+ */
+@theme {
+  /* Navy surfaces */
+  --color-navy-950: #081629;
+  --color-navy-900: #0f2340;
+  --color-navy-800: #16304f;
+  --color-navy-700: #1b3a63;
+  --color-navy-600: #234a7a;
+  --color-muted-500: #5b6b82;
+  --color-muted-400: #8fa3ba;
+
+  /* Brand accents */
+  --color-accent-blue: #13a89e;
+  --color-accent-orange: #2ee6b6;
+  --color-accent-teal: #13a89e;
+  --color-accent-mint: #2ee6b6;
+
+  /* blue-* -> brand teal ramp */
+  --color-blue-50: #e8faf7;
+  --color-blue-100: #c5f2eb;
+  --color-blue-200: #9be8dc;
+  --color-blue-300: #6fdccd;
+  --color-blue-400: #3cc9b9;
+  --color-blue-500: #13a89e;
+  --color-blue-600: #0f9189;
+  --color-blue-700: #0c7670;
+  --color-blue-800: #0a5d59;
+  --color-blue-900: #084a47;
+  --color-blue-950: #042b2a;
+
+  /* indigo-* -> deep clinical teal-blue (gradient partner) */
+  --color-indigo-400: #2bb3c9;
+  --color-indigo-500: #138aa8;
+  --color-indigo-600: #0e7490;
+  --color-indigo-700: #0b5e75;
+
+  /* orange-* -> mint ramp */
+  --color-orange-300: #8ff3d9;
+  --color-orange-400: #5cecc7;
+  --color-orange-500: #2ee6b6;
+  --color-orange-600: #1fcf9f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+body {
+  background-color: #f6fafb;
+  color: #0f2340;
+  font-family: var(--font-sans);
+}
+
+/* Soft clinical backdrop: white with gentle teal / mint / sky light pools */
+.bg-clinical {
+  background-color: #f6fafb;
+  background-image:
+    radial-gradient(60rem 40rem at 85% -10%, rgba(46, 230, 182, 0.18), transparent 60%),
+    radial-gradient(50rem 35rem at -10% 20%, rgba(19, 168, 158, 0.14), transparent 60%),
+    radial-gradient(40rem 30rem at 60% 110%, rgba(56, 189, 248, 0.12), transparent 60%);
+}
+
+/* Subtle dotted grid used behind hero visuals */
+.bg-dots {
+  background-image: radial-gradient(rgba(15, 35, 64, 0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* Elevated white card */
+.card-elevated {
+  background: #ffffff;
+  border: 1px solid #e2eaf0;
+  box-shadow: 0 1px 2px rgba(15, 35, 64, 0.04), 0 8px 24px -12px rgba(15, 35, 64, 0.12);
+}
+
+/* Smooth page entrance */
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.page-in {
+  animation: page-in 0.35s ease-out both;
+}
+
+/* Brand gradient text, e.g. for the hero headline accent */
+.text-brand-gradient {
+  background: linear-gradient(90deg, #0c7670 0%, #13a89e 45%, #1fcf9f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ------------------------------------------------------------------ */
+/* Responsiveness guard: decorative elements must never cause sideways scroll */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* ------------------------------------------------------------------ */
+/* Interaction kit                                                     */
+/* ------------------------------------------------------------------ */
+
+/* Any button/link: lift on hover, press-in on click, crisp focus ring */
+.btn-fx {
+  transition:
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.25s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+  will-change: transform;
+}
+.btn-fx:hover {
+  transform: translateY(-2px);
+}
+.btn-fx:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.08s;
+}
+.btn-fx:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(19, 168, 158, 0.35);
+}
+.btn-fx:disabled {
+  transform: none;
+}
+
+/* Primary buttons: glossy light sweep + teal glow */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.45) 45%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+.btn-shine:hover::after {
+  transform: translateX(120%);
+}
+.btn-shine:hover {
+  box-shadow:
+    0 10px 25px -8px rgba(19, 168, 158, 0.6),
+    0 0 0 1px rgba(46, 230, 182, 0.35);
+}
+
+/* Arrow / icon that nudges forward when its parent .group is hovered */
+.nudge {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.group:hover .nudge {
+  transform: translateX(4px);
+}
+
+/* Cards: lift, teal edge glow and a soft spotlight that follows the cursor */
+.card-fx {
+  position: relative;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.card-fx::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    22rem circle at var(--mx, 50%) var(--my, 50%),
+    rgba(46, 230, 182, 0.14),
+    transparent 60%
+  );
+}
+.card-fx:hover {
+  transform: translateY(-4px);
+  border-color: rgba(19, 168, 158, 0.45);
+  box-shadow:
+    0 18px 40px -18px rgba(15, 35, 64, 0.28),
+    0 0 0 1px rgba(19, 168, 158, 0.15);
+}
+.card-fx:hover::before {
+  opacity: 1;
+}
+
+/* Text links: underline that grows from the centre */
+.link-fx {
+  position: relative;
+}
+.link-fx::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #13a89e, #2ee6b6);
+  transition:
+    left 0.25s ease,
+    right 0.25s ease;
+}
+.link-fx:hover::after,
+.link-fx[aria-current='page']::after {
+  left: 0;
+  right: 0;
+}
+
+/* Icons inside cards gently pop on hover */
+.pop {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.group:hover .pop {
+  transform: scale(1.12) rotate(-4deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
