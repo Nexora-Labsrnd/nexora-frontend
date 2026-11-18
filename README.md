@@ -28,15 +28,16 @@ repo as a sibling directory named `nexora-frontend`, or at the path given by
    do **not** set a Root Directory subdirectory.
 2. Build settings are detected automatically; `svelte.config.js` pins
    `@sveltejs/adapter-vercel`.
-3. Add the environment variable:
-
-   ```text
-   VITE_API_URL=https://nexora-api.onrender.com
-   ```
-
-   Vite inlines this at **build time**, so redeploy after changing it.
-
-4. The Render backend must allow this origin in its `CORS_ORIGINS` setting.
+3. **No environment variables are required.** `vercel.json` proxies `/api/*`
+   and `/health` to the Render backend, so the browser only talks to its own
+   Vercel origin. You can remove `VITE_API_URL` from Vercel; it is ignored in
+   production builds.
+4. There is also a SvelteKit server-route fallback (`src/routes/api/[...path]`)
+   for cases where Vercel does not apply the `vercel.json` rewrites. It uses
+   `NEXORA_API_URL` (default `https://nexora-api-gu9p.onrender.com`).
+5. Because requests are same-origin, no CORS configuration is needed on Render.
+   If the Render URL ever changes, update the rewrites in `vercel.json` **and**
+   the `NEXORA_API_URL` default in `src/lib/server/api-proxy.ts`.
 
 ## Assets
 

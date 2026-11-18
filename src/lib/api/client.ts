@@ -1,10 +1,11 @@
 // API Client helper for Nexora Frontend
 
-// Empty by default: requests go to the same origin and Vite proxies /api to
-// the FastAPI backend (see vite.config.ts). This is what makes the app work
-// from another laptop or a public share link. On Vercel, VITE_API_URL points
-// at the Render backend; it is baked into the build, so set it before deploy.
-const API_BASE_URL: string = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
+// In production the browser always calls the SAME ORIGIN: vercel.json proxies
+// /api/* to the Render backend, so there is no CORS to configure and no URL to
+// bake into the build. In dev, Vite proxies /api to NEXORA_API_URL (default
+// http://127.0.0.1:8000); VITE_API_URL can point the dev server at a remote API.
+const configuredBase: string = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '');
+const API_BASE_URL: string = import.meta.env.PROD ? '' : configuredBase;
 
 export type UserRole = 'technician' | 'doctor' | 'lab_director' | 'admin';
 
@@ -110,10 +111,11 @@ export async function fetchApi<T>(
       ...options,
       headers,
     });
-  } catch {
+  } catch (err) {
+    console.error('Nexora API request failed', { endpoint, base: API_BASE_URL, err });
     throw new Error(
       'Cannot reach the Nexora API. If you are running locally, start it with start.bat; '
-        + 'otherwise check that the deployed backend is awake and try again.'
+        + 'otherwise the deployed backend may be waking up — try again in a minute.'
     );
   }
 

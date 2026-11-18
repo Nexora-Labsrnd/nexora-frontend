@@ -2,5 +2,15 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "sveltekit",
   "installCommand": "npm install",
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://nexora-api-gu9p.onrender.com/api/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://nexora-api-gu9p.onrender.com/health"
+    }
+  ]
 }
