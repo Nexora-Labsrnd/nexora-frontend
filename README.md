@@ -34,7 +34,7 @@ repo as a sibling directory named `nexora-frontend`, or at the path given by
    production builds.
 4. There is also a SvelteKit server-route fallback (`src/routes/api/[...path]`)
    for cases where Vercel does not apply the `vercel.json` rewrites. It uses
-   `NEXORA_API_URL` (default `https://nexora-api-gu9p.onrender.com`).
+   `NEXORA_API_URL`.
 5. Because requests are same-origin, no CORS configuration is needed on Render.
    If the Render URL ever changes, update the rewrites in `vercel.json` **and**
    the `NEXORA_API_URL` default in `src/lib/server/api-proxy.ts`.
